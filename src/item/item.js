@@ -9,7 +9,7 @@ class Item extends Component {
         <td>{item.name}</td>
         <td>${item.price.toFixed(2)} {item.onSale ? '(SALE!)' : ''}</td>
         <td>
-          <a href="#" className="deleteItem" onClick={this.props.onDelete}>Delete</a>
+          <a href="#" className="deleteItem" onClick={() => {this.props.onDelete(item.id)} }>Delete</a>
         </td>
       </tr>
     )

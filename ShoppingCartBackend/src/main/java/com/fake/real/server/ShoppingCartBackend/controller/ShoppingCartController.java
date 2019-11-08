@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -25,9 +26,9 @@ public class ShoppingCartController {
         return "200 OK";
     }
 
-    @DeleteMapping(value = "/deleteItem", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String deleteItem(@RequestBody Item item) {
-        cartRepository.delete(item);
+    @DeleteMapping(value = "/deleteItem/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String deleteItem(@PathVariable("id") String id) {
+        cartRepository.deleteById(id);
         return "200 OK";
     }
 }

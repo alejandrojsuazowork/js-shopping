@@ -1,25 +1,51 @@
 import React, { Component } from 'react';
 import ItemModel from '../item/item.model';
 import Item from '../item/item';
-import { getItems } from '../api.js'
+import api from '../api'
 
 class Cart extends Component {
+  constructor()  {
+    super();
+  }
+
   state = {
-    list: []
+      items: []
+  }
+
+  // ...args is optional and
+  getAllItems() {
+    api.getItems().then((response) => {
+        console.log(response)
+        this.setState({items: response});
+    });
   }
 
   componentDidMount() {
-    getItems()
-        .then((response) => {
-          this.setState({list: response});
-        })
+    this.getAllItems();
+  }
+
+  getSpecificItem(id) {
+      console.log(this.state.items);
+      let item = this.state.items.reduce( (item, index) => {
+        if(item.id==id) return item;
+      });
+
+      return item;
+  }
+
+  deleteSpecificItem = (id) => {
+
+    api.deleteItemById(id).then((response) => {
+      if(response == "200 OK")
+        this.getAllItems();
+    });
   }
 
   render() {
-    console.log(this.state);
+    console.log(this.state.items);
     return (
       <div className="App-item">
-          {this.state.list.map((item) => <Item item={item}/>)}
+          {this.state.items.map((item) => <Item key={item.id} item={item} onDelete={this.deleteSpecificItem}/>)}
       </div>
     )
   }

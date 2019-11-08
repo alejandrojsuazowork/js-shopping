@@ -41,16 +41,32 @@ describe('<Cart> test suite', () => {
             expect(true).toBe(true);
         });
 
-        it('cart should have one item when user adds an item', done => {
+        it('cart should have one more item when user adds an item', done => {
+            expect(shallowCart.state().items).not.toBe(null);
+            expect(shallowCart.state().items.length).toBe(2);
 
-            done();
+            let allItems = [
+                new ItemModel('First', 50),
+                new ItemModel('Second', 100),
+                new ItemModel('Third', 200)
+            ];
+            api.getItems.mockReturnValueOnce(Promise.resolve(allItems));
+
+            setImmediate(() => {
+                shallowCart.instance().addSpecificItem(allItems[2]);
+
+                setImmediate(() => {
+                    expect(shallowCart.state().items).not.toBe(null);
+                    expect(shallowCart.state().items.length).toBe(3);
+                    done();
+                });
+            });
         });
 
         it('cart should be able to request item by id', done => {
             let fetchedItem = shallowCart.instance().getSpecificItem(shallowCart.state().items[0].id);
 
             setImmediate(() => {
-                console.log(fetchedItem);
                 expect(fetchedItem.id).toBe(shallowCart.state().items[0].id);
                 expect(fetchedItem.name).toBe(shallowCart.state().items[0].name);
 
@@ -59,7 +75,6 @@ describe('<Cart> test suite', () => {
         });
 
         it('cart should be able to delete an item by id', done => {
-            let remainingItems = [];
             setImmediate(() => {
                 expect(shallowCart.state().items).not.toBe(null);
                 expect(shallowCart.state().items.length).toBe(2);

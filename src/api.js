@@ -17,6 +17,21 @@ const baseHandler = (hldrUrl) => {
     }));
 };
 
+const putHandler = (hldrUrl, item) => {
+    return new Promise((resolve => {
+        let r = new XMLHttpRequest();
+        r.open("PUT", hldrUrl, true);
+        r.setRequestHeader("Content-Type", "application/json");
+        r.onreadystatechange = function () {
+            if (r.readyState == 4 && r.status == 200) {
+                resolve(r.response);
+            }
+        };
+        var myJSON = JSON.stringify(item);
+        r.send(myJSON);
+    }));
+};
+
 const deleteHandler = (hldrUrl) => {
     return new Promise((resolve => {
         let r = new XMLHttpRequest();
@@ -33,7 +48,7 @@ const deleteHandler = (hldrUrl) => {
 
 export default {
     getItems() { return baseHandler(`${url}/getItems`) },
-    getItemById: id => baseHandler(`${url}/items/{id}`),
+    addItem(item) { return putHandler(`${url}/putItem`, item) },
     deleteItemById: id => deleteHandler(`${url}/deleteItem/${id}`)
 }
 

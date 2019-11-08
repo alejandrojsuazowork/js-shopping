@@ -1,14 +1,5 @@
 import ItemModel from "../item/item.model";
 
-// export const getItems = () => {
-//     return new Promise((resolve) => {
-//         resolve([
-//             new ItemModel('OtherThing', 11),
-//             new ItemModel('FinalThing', 1200, true)
-//         ]);
-//     });
-// };
-
 
 let items = [
     new ItemModel('OtherThing', 11),
@@ -21,19 +12,6 @@ function getPromise(data) {
     return new Promise((resolve, reject) => resolve(data));
 }
 
-// export const getItemById = (id) => {
-//     return new Promise((resolve) => {
-//
-//         resolve(
-//             new ItemModel('OneThing', 12000, true, id)
-//         );
-//     });
-// }
-
-// export const deleteItem = () => {
-//     return new Promise((resolve, ))
-// }
-
 export default {
     getPromise,
     getItems: jest.fn(() => {
@@ -42,6 +20,9 @@ export default {
     getItemById: jest.fn((id) => {
         item.id=id;
         return getPromise(item);
+    }),
+    addItem: jest.fn((item) => {
+        return getPromise("200 OK");
     }),
     deleteItemById: jest.fn((id) => {
         return getPromise("200 OK");
